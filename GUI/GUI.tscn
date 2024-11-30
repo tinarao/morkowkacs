@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://daticiwa7ttd2"]
+
+[ext_resource type="Script" path="res://GUI/Gui.cs" id="1_lvv57"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_lvv57")
+
+[node name="HandItemLabel" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 131.0
+offset_bottom = 39.0
+text = "HandItemlabel"
