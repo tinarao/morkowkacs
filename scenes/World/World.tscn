@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=4 uid="uid://b2bjxl8pq4hx2"]
+[gd_scene load_steps=11 format=4 uid="uid://b2bjxl8pq4hx2"]
 
 [ext_resource type="Script" path="res://scenes/World/World.cs" id="1_2lp3g"]
 [ext_resource type="Texture2D" uid="uid://bm221pfwfog2t" path="res://assets/Tilesets/Hills.png" id="1_5xx4q"]
 [ext_resource type="Texture2D" uid="uid://dkn2vtt1bpo56" path="res://assets/Tilesets/Tilled_Dirt_Wide_v2.png" id="3_j433f"]
+[ext_resource type="Texture2D" uid="uid://bvy4xa8wpwecv" path="res://assets/Objects/Basic_Plants.png" id="4_22pmu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tmgdw"]
 texture = ExtResource("1_5xx4q")
@@ -857,6 +858,28 @@ terrain_set_0/terrain_0/name = "Plows"
 terrain_set_0/terrain_0/color = Color(0.81222, 0.625239, 0.515623, 1)
 sources/0 = SubResource("TileSetAtlasSource_amul2")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o2fyt"]
+texture = ExtResource("4_22pmu")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+1:1/0/texture_origin = Vector2i(0, 4)
+2:1/0 = 0
+2:1/0/texture_origin = Vector2i(0, 4)
+3:1/0 = 0
+3:1/0/texture_origin = Vector2i(0, 4)
+4:1/0 = 0
+4:1/0/texture_origin = Vector2i(0, 4)
+5:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_asecq"]
+sources/0 = SubResource("TileSetAtlasSource_o2fyt")
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_2lp3g")
 
@@ -866,3 +889,6 @@ tile_set = SubResource("TileSet_ocosk")
 
 [node name="Plows" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_656wv")
+
+[node name="PlantedSeeds" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_asecq")

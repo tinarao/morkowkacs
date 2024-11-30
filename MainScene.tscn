@@ -14,5 +14,7 @@ position = Vector2(-395, -125)
 [node name="Player" parent="." instance=ExtResource("1_3l04d")]
 position = Vector2(-65, 166)
 
+[connection signal="PlantedBeetrootSuccessfully" from="World" to="Player" method="OnPlantedBeetrootSuccessfully"]
 [connection signal="PlowedSuccessfully" from="World" to="Player" method="OnPlowedSuccessfully"]
+[connection signal="PlantBeetrootSignal" from="Player" to="World" method="OnPlayerPlantBeetrootRequest"]
 [connection signal="PlowSignal" from="Player" to="World" method="OnPlayerPlowRequest"]

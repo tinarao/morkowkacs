@@ -12,9 +12,9 @@ public partial class Gui : CanvasLayer
 		_handItemLabel = GetNode<Label>("HandItemLabel");
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		_handItemLabel.Text = _player.HandSelectedItem.Label;
+		var _item = _player.GetHandItem();
+		_handItemLabel.Text = $"{_item.Label} {_item.Amount}";
 	}
 }

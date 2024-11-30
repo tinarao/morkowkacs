@@ -45,6 +45,9 @@ public partial class Player : CharacterBody2D
 	[Signal]
 	public delegate void PlowSignalEventHandler();
 
+	[Signal]
+	public delegate void PlantBeetrootSignalEventHandler();
+
     public override void _Ready()
     {
         base._Ready();
@@ -131,7 +134,13 @@ public partial class Player : CharacterBody2D
 		}
 	}
 
+	public InvItem GetHandItem()
+	{
+		return HandSelectedItem;
+	}
+
 	// Actions
+	// 		Plow
 	public void Plow()
 	{
 		EmitSignal(SignalName.PlowSignal);
@@ -142,8 +151,18 @@ public partial class Player : CharacterBody2D
 		_stateMachine.Travel("Plow");
 	}
 
+	// 		Plant a beetroot
 	public void PlantBeetroot()
 	{
-		GD.Print("Plant beetroot");
+		if (_beetrootSeeds.Amount == 0)
+		{
+			return;
+		}
+		EmitSignal(SignalName.PlantBeetrootSignal);
+	}
+
+	public void OnPlantedBeetrootSuccessfully()
+	{
+		_beetrootSeeds.Amount -= 1;
 	}
 }
