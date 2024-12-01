@@ -18,18 +18,24 @@ public partial class World : Node2D
 
 	private HashSet<Vector2> _tilesAllowedToPlowAtlases;
 	private Array<Vector2I> _plowedTilesPosition;
-	private HashSet<Vector2I> _plantedVeggies;
+	private HashSet<Vector2I> _plantedVeggiesPositions;
+	private List<PlantedVeggie> _plantedVeggiesArr;
+
+	private Random _random;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_random = new Random();
+
 		_hillsLayer = GetNode<TileMapLayer>("Hills");
 		_plowsLayer = GetNode<TileMapLayer>("Plows");
 		_plantsLayer = GetNode<TileMapLayer>("PlantedSeeds");
 
+		_plantedVeggiesArr = new List<PlantedVeggie>();
 		_plowedTilesPosition = new Array<Vector2I>();
 		_tilesAllowedToPlowAtlases = new HashSet<Vector2>();
-		_plantedVeggies = new HashSet<Vector2I>();
+		_plantedVeggiesPositions = new HashSet<Vector2I>();
 
 		_tilesAllowedToPlowAtlases.Add(new Vector2(1, 1));
 		
@@ -64,7 +70,7 @@ public partial class World : Node2D
 			return;
 		}
 
-		Vector2 _tileAtlasCoordinates = _hillsLayer.GetCellAtlasCoords(_tilePosition);
+		Vector2I _tileAtlasCoordinates = _hillsLayer.GetCellAtlasCoords(_tilePosition);
 		if (!_tilesAllowedToPlowAtlases.Contains(_tileAtlasCoordinates))
 		{
 			return;
@@ -82,19 +88,42 @@ public partial class World : Node2D
 		TileData _tile = _plowsLayer.GetCellTileData(_tilePosition);
 		if (_tile == null)
 		{
-			GD.Print("No plows here.");
 			return;
 		}
 
-		if (_plantedVeggies.Contains(_tilePosition))
+		if (_plantedVeggiesPositions.Contains(_tilePosition))
 		{
-			GD.Print("Already planted here");
 			return;
 		}
 
-		_plantedVeggies.Add(_tilePosition);
-		_plantsLayer.SetCell(_tilePosition, 0, new Vector2I(1, 1));
+		Vector2I _atlas = new Vector2I(1, 1);
+
+		PlantedVeggie _veggie = new PlantedVeggie(_tilePosition, _atlas);
+		_plantedVeggiesArr.Add(_veggie);
+
+		_plantedVeggiesPositions.Add(_tilePosition);
+		_plantsLayer.SetCell(_tilePosition, 0, _atlas);
 
 		EmitSignal(SignalName.PlantedBeetrootSuccessfully);
+	}
+
+	// Time-based events
+	public void OnDayTickEvents()
+	{
+		for (int i = 0; i < _plantedVeggiesArr.Count; i++)
+		{
+			var _randint = _random.Next(1, 100);
+			// _randint > 65
+			if (true)
+			{
+				if (_plantedVeggiesArr[i].AtlasCoordinates.X == 4)
+				{
+					return;
+				}
+
+				_plantedVeggiesArr[i].AtlasCoordinates.X += 1;
+				_plantsLayer.SetCell(_plantedVeggiesArr[i].TileCoordinates, 0, _plantedVeggiesArr[i].AtlasCoordinates);
+			}
+		}
 	}
 }

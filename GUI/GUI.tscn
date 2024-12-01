@@ -11,3 +11,10 @@ offset_top = 16.0
 offset_right = 131.0
 offset_bottom = 39.0
 text = "HandItemlabel"
+
+[node name="TimeLabel" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 40.0
+offset_right = 56.0
+offset_bottom = 63.0
+text = "TimeLabel"
