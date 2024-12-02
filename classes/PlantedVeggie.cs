@@ -18,7 +18,6 @@ public class PlantedVeggie
     {
         if (Stage == MAX_STAGE)
         {
-            GD.Print("Odna swekla sozrela");
             return;
         }
 

@@ -178,12 +178,12 @@ public partial class Player : CharacterBody2D
 
 	public void HarvestPlant()
 	{
-		GD.Print("harvest signal sent");
 		EmitSignal(SignalName.HarvestPlantSignal);
 	}
 
 	public void OnHarvestedSuccessfully(int seedsAmount)
 	{
 		_beetrootSeeds.Amount += (uint)seedsAmount;
+		_stateMachine.Travel("Plow");
 	}
 }

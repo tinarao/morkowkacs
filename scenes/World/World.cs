@@ -108,13 +108,11 @@ public partial class World : Node2D
 
 	public void OnPlayerHarvestRequest()
 	{
-		GD.Print("Harvest signal recieved");
 		Vector2 _mousePos = GetLocalMousePosition();
 		Vector2I _tilePosition = _plantsLayer.LocalToMap(_mousePos);
 		TileData _tile = _plantsLayer.GetCellTileData(_tilePosition);
 		if (_tile == null)
 		{
-			GD.Print("No tile");
 			return;
 		}
 
@@ -123,8 +121,6 @@ public partial class World : Node2D
 		{
 			_seedsToReturn += _random.Next(2, 4);
 		}
-
-		GD.Print("success harvest");
 
 		EmitSignal(SignalName.HarvestedSuccessfully, _seedsToReturn);
 		_plantedVeggiesPositions.RemoveWhere(v => v == _tilePosition);
