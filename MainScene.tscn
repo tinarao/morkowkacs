@@ -19,7 +19,9 @@ position = Vector2(-65, 166)
 
 [connection signal="DayTick" from="DayNightCycle" to="World" method="OnDayTickEvents"]
 [connection signal="TimeCounter" from="DayNightCycle" to="CanvasLayer" method="OnTimeTick"]
+[connection signal="HarvestedSuccessfully" from="World" to="Player" method="OnHarvestedSuccessfully"]
 [connection signal="PlantedBeetrootSuccessfully" from="World" to="Player" method="OnPlantedBeetrootSuccessfully"]
 [connection signal="PlowedSuccessfully" from="World" to="Player" method="OnPlowedSuccessfully"]
+[connection signal="HarvestPlantSignal" from="Player" to="World" method="OnPlayerHarvestRequest"]
 [connection signal="PlantBeetrootSignal" from="Player" to="World" method="OnPlayerPlantBeetrootRequest"]
 [connection signal="PlowSignal" from="Player" to="World" method="OnPlayerPlowRequest"]

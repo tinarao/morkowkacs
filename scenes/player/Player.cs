@@ -40,6 +40,7 @@ public partial class Player : CharacterBody2D
 
 	InvItem _hoe = new InvItem("Мотыга", 1, InvItemType.Tool);
 	InvItem _beetrootSeeds = new InvItem("Семяна свеклы", 9, InvItemType.Seed);
+	InvItem _scythe = new InvItem("Коса", 1, InvItemType.Tool);
 	InvItem _nothing = new InvItem("Пусто", 1, InvItemType.Nothing);
 
 	[Signal]
@@ -47,6 +48,9 @@ public partial class Player : CharacterBody2D
 
 	[Signal]
 	public delegate void PlantBeetrootSignalEventHandler();
+
+	[Signal]
+	public delegate void HarvestPlantSignalEventHandler();
 
     public override void _Ready()
     {
@@ -77,6 +81,9 @@ public partial class Player : CharacterBody2D
 				break;
 			case "2":
 				HandSelectedItem = _beetrootSeeds;
+				break;
+			case "3":
+				HandSelectedItem = _scythe;
 				break;
 			case "0":
 				HandSelectedItem = _nothing;
@@ -131,6 +138,9 @@ public partial class Player : CharacterBody2D
 			case "Семяна свеклы":
 				PlantBeetroot();
 				break;
+			case "Коса":
+				HarvestPlant();
+				break;
 		}
 	}
 
@@ -164,5 +174,16 @@ public partial class Player : CharacterBody2D
 	public void OnPlantedBeetrootSuccessfully()
 	{
 		_beetrootSeeds.Amount -= 1;
+	}
+
+	public void HarvestPlant()
+	{
+		GD.Print("harvest signal sent");
+		EmitSignal(SignalName.HarvestPlantSignal);
+	}
+
+	public void OnHarvestedSuccessfully(int seedsAmount)
+	{
+		_beetrootSeeds.Amount += (uint)seedsAmount;
 	}
 }

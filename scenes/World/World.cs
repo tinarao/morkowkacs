@@ -2,12 +2,16 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public partial class World : Node2D
 {
 
 	[Signal]
 	public delegate void PlowedSuccessfullyEventHandler();
+
+	[Signal]
+	public delegate void HarvestedSuccessfullyEventHandler(int seedsAmount);
 
 	[Signal]
 	public delegate void PlantedBeetrootSuccessfullyEventHandler();
@@ -23,7 +27,6 @@ public partial class World : Node2D
 
 	private Random _random;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		_random = new Random();
@@ -54,10 +57,6 @@ public partial class World : Node2D
 		_tilesAllowedToPlowAtlases.Add(new Vector2(5, 6));
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 
 	public void OnPlayerPlowRequest()
 	{
@@ -107,14 +106,50 @@ public partial class World : Node2D
 		EmitSignal(SignalName.PlantedBeetrootSuccessfully);
 	}
 
+	public void OnPlayerHarvestRequest()
+	{
+		GD.Print("Harvest signal recieved");
+		Vector2 _mousePos = GetLocalMousePosition();
+		Vector2I _tilePosition = _plantsLayer.LocalToMap(_mousePos);
+		TileData _tile = _plantsLayer.GetCellTileData(_tilePosition);
+		if (_tile == null)
+		{
+			GD.Print("No tile");
+			return;
+		}
+
+		int _seedsToReturn = 1;
+		if (_plantsLayer.GetCellAtlasCoords(_tilePosition).X == 4)
+		{
+			_seedsToReturn += _random.Next(2, 4);
+		}
+
+		GD.Print("success harvest");
+
+		EmitSignal(SignalName.HarvestedSuccessfully, _seedsToReturn);
+		_plantedVeggiesPositions.RemoveWhere(v => v == _tilePosition);
+		
+		int _vegIndex = -1;
+		foreach (var _veggie in _plantedVeggiesArr)
+		{
+			if (_veggie.TileCoordinates == _tilePosition)
+			{
+				_vegIndex = _plantedVeggiesArr.IndexOf(_veggie);
+			}
+		}
+		Debug.Assert(_vegIndex > -1);
+
+		_plantedVeggiesArr.RemoveAt(_vegIndex);
+		_plantsLayer.SetCell(_tilePosition);
+	}
+
 	// Time-based events
 	public void OnDayTickEvents()
 	{
 		for (int i = 0; i < _plantedVeggiesArr.Count; i++)
 		{
 			var _randint = _random.Next(1, 100);
-			// _randint > 65
-			if (true)
+			if (_randint > 65)
 			{
 				if (_plantedVeggiesArr[i].AtlasCoordinates.X == 4)
 				{
